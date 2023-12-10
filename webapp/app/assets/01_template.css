@@ -1,0 +1,242 @@
+@font-face {
+    font-family: nixenOne;
+    src: url(Arthemis-PKY27.ttf);
+}
+
+
+@font-face {
+    font-family: 'publico';
+    src: url("publico-medium.woff2") format("woff2"),url("publico-medium.woff") format("woff");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap
+}
+
+@font-face {
+    font-family: 'publico-text';
+    src: url("publicotext.woff2") format("woff2"),url("publicotext.woff") format("woff");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap
+}
+
+.title{
+font-family: publico;
+}
+
+
+
+#list_news {
+    height: 20em;
+    line-height: 2em;
+    border: 1px solid #ccc;
+    padding: 0;
+    margin: 0;
+    overflow: scroll;
+    overflow-x: hidden;
+}
+
+#list_news li {
+    border-top: 1px solid #ccc;
+}
+
+
+
+#news_author_table{
+    text-align:center;
+
+}
+.table-responsive {
+    max-height:300px;
+}
+
+.metric-label {
+        display: flex;
+        justify-content: space-between;
+        height: 30px;
+        line-height: 30px;
+        padding: 5px 15px;
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+
+
+.card-text a {
+    font-size: 20px;
+    font-family: publico-text;
+}
+
+
+/* radability slider */
+
+#readability-slider .rc-slider-track {
+  background-color: #82E0AA;
+}
+
+#readability-slider .rc-slider-dot-active {
+  border-color: #239B56;
+  border: solid 2px #239B56;
+}
+
+#readability-slider .rc-slider-handle {
+  background-color: #82E0AA;
+  border-color: #82E0AA;
+}
+
+#readability-slider .rc-slider-handle:hover {
+  border-color: #239B56;
+}
+
+#readability-slider .rc-slider-handle-active:active {
+  border-color: #239B56;
+}
+
+/* factual slider*/
+
+#factual-slider .rc-slider-track {
+  background-color: #85C1E9;
+}
+
+#factual-slider .rc-slider-dot-active {
+  border-color: #2E86C1;
+  border: solid 2px #2E86C1;
+}
+
+#factual-slider .rc-slider-handle {
+  background-color: #85C1E9;
+  border-color: #85C1E9;
+}
+
+#factual-slider .rc-slider-handle:hover {
+  border-color: #2E86C1;
+}
+
+#factual-slider .rc-slider-handle-active:active {
+  border-color: #2E86C1;
+}
+
+/* length slider*/
+
+
+
+#length-slider .rc-slider-track {
+  background-color: #D2B4DE;
+}
+
+#length-slider .rc-slider-dot-active {
+  border-color: #8E44AD;
+  border: solid 2px #8E44AD;
+}
+
+#length-slider .rc-slider-handle {
+  background-color: #D2B4DE;
+  border-color: #D2B4DE;
+}
+
+#length-slider .rc-slider-handle:hover {
+  border-color: #8E44AD;
+}
+
+#length-slider .rc-slider-handle-active:active {
+  border-color: #8E44AD;
+}
+
+/* color: #d00018 */
+
+h1, h2 ,h3,h4 {
+    color: #d00018;
+    font-family: publico;
+}
+p{
+    font-family: publico-text;
+}
+
+
+.btn-primary {
+    --bs-btn-color: #fff;
+    --bs-btn-bg: #2fa4e7;
+    --bs-btn-border-color: #2fa4e7;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #288bc4;
+    --bs-btn-hover-border-color: #2683b9;
+    --bs-btn-focus-shadow-rgb: 78,178,235;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #2683b9;
+    --bs-btn-active-border-color: #237bad;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #2fa4e7;
+    --bs-btn-disabled-border-color: #2fa4e7;
+}
+
+
+
+
+.submit-button {
+	box-shadow:inset 0px 1px 0px 0px #cf866c;
+	background:linear-gradient(to bottom, #d0451b 5%, #bc3315 100%);
+	background-color:#d0451b;
+	border-radius:5px;
+	border:1px solid #942911;
+	display:inline-block;
+	cursor:pointer;
+	color:#ffffff;
+	font-family:Arial;
+	font-size:15px;
+	font-weight:bold;
+	padding:12px 43px;
+	text-decoration:none;
+}
+.submit-button:hover {
+	background:linear-gradient(to bottom, #bc3315 5%, #d0451b 100%);
+	background-color:#bc3315;
+}
+.submit-button:active {
+	position:relative;
+	top:1px;
+}
+
+
+
+
+a{
+    color:#07090A;
+    font-weight: bold;
+}
+
+a:hover{
+    color: #D10019;
+    font-weight: bold;
+
+}
+
+.topic_title{
+    border-bottom:0.2rem solid #f8dc51;
+    color: #D10019;
+    margin-top:2rem;
+}
+
+
+a{
+color:#07090A;
+font-weight: bold;
+}
+
+
+
+
+.carousel_div a:hover{
+    color: #D10019;
+    font-weight: bold;
+
+}
+
+
+
+.carousel_div img:hover{
+
+      transition: 1s;
+      opacity: 0.2;
+
+}
+

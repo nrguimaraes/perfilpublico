@@ -1,4 +1,7 @@
-# Perfil Público
+<section align="center">
+<img src="https://www.fc.up.pt/pessoas/nuno.guimaraes/perfilpublico/ss_logo.png" alt="logo"  />
+</section>
+
 
 Welcome to **Perfil Público**, a powerful platform designed in Python that revolutionizes the way readers discover digital news media authors. Our platform employs a sophisticated framework to analyze and generate author profiles based on their writing style and topics of interest, utilizing a time span of news articles collected from the Arquivo.pt.
 
@@ -11,6 +14,10 @@ Welcome to **Perfil Público**, a powerful platform designed in Python that revo
 ## Demo
 
 Check out our live demo at [Perfil Público Demo](http://www.perfilpublico.pt), showcasing the capabilities of our platform using articles from the Público news outlet.
+<section align="center">
+<img src="https://www.fc.up.pt/pessoas/nuno.guimaraes/perfilpublico/ss_author.png" alt="Author Page" width="400px"  />
+<img src="https://www.fc.up.pt/pessoas/nuno.guimaraes/perfilpublico/ss_pesquisa.png" alt="Search Page" width="400px"  />
+</section>
 
 ## Methodology
 
@@ -18,6 +25,10 @@ Perfil Público's methodology is divided into two components:
 
 1. **Framework**: Responsible for the automatic generation of authors' profiles based on a time span of news articles from Arquivo.pt.
 2. **Web Platform**: Enables readers to discover authors aligning with their preferences through an intuitive and feature-rich web interface.
+<section align="center">
+<img src="https://www.fc.up.pt/pessoas/nuno.guimaraes/perfilpublico/dataextractionPP2.png" alt="Data Extraction Methodology" width="500px"  />
+<img src="https://www.fc.up.pt/pessoas/nuno.guimaraes/perfilpublico/ProfileGenerationPP2.png" alt="Profile Generation Methodology" width="500px"  />
+</section>
 
 ## Getting Started
 

@@ -1,3 +1,3 @@
 from pymongo import MongoClient
 
-client=MongoClient("mongodb://user:pass@localhost:27017")
+client=MongoClient(host="localhost",port=27017)

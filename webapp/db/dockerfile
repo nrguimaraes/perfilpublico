@@ -17,6 +17,6 @@ COPY ./PerfilPublicoMongoDB/PerfilPublicoAll /data/dump
 #RUN mongorestore --db PerfilPublicoAll --verbose /data/dump
 
 COPY mongorestore.sh /data/restore.sh
-CMD ["chmod", "+x", "/data/restore.sh"]
+RUN chmod +x /data/restore.sh
 
-CMD ["/data/restore.sh"]
+RUN /data/restore.sh

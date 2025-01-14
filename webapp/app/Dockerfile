@@ -1,6 +1,6 @@
 FROM python:3.10
 
-ENV DASH_DEBUG_MODE False
+ENV DASH_DEBUG_MODE=False
 COPY . /app
 WORKDIR /app
 RUN set -ex && \

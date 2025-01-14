@@ -1,0 +1,22 @@
+#
+# MongoDB Dockerfile
+#
+# https://github.com/dockerfile/mongodb
+#
+
+# Pull base image.
+FROM mongo:5.0.17
+
+WORKDIR /data
+
+EXPOSE 27017
+
+CMD ["mongod","--bind_ip_all"]
+COPY ./PerfilPublicoMongoDB/PerfilPublicoAll /data/dump
+
+#RUN mongorestore --db PerfilPublicoAll --verbose /data/dump
+
+COPY mongorestore.sh /data/restore.sh
+RUN chmod +x /data/restore.sh
+
+CMD ["/data/restore.sh"]

@@ -9,5 +9,4 @@ sleep 5
 # Restore the dump
 mongorestore --db PerfilPublicoAll --verbose /data/dump
 
-# Keep MongoDB running
-wait
+

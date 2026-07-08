@@ -1,10 +1,6 @@
 from dataclasses import dataclass
 from typing import Any, Mapping, Optional
 
-
-DEFAULT_BIOGRAPHY = "description"
-
-
 @dataclass(frozen=True)
 class BiographyStatus:
     author_name: str
@@ -17,7 +13,7 @@ class BiographyChecker:
     def __init__(
         self,
         author_metadata_collection: Any,
-        biography_field: str = DEFAULT_BIOGRAPHY,
+        biography_field: str = "description",
     ) -> None:
         self.author_metadata_collection = author_metadata_collection
         self.biography_field = biography_field

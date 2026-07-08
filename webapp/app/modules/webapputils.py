@@ -28,10 +28,14 @@ def getPhoto(author_name):
 def getTrends(limit=10):
     today=str(datetime.datetime.now().date())
     filepath="assets/trends_today.p"
+
     if(os.path.exists(filepath)):
-        data=pickle.load(open(filepath,"rb"))
-        if(data["date"]==today):
-            return data["trends"]
+        try:
+            data=pickle.load(open(filepath,"rb"))
+            if(data["date"]==today):
+                return data.get("trends",[])
+        except:
+            pass
 
     try:
         pt = TrendReq(hl="pt-PT")
@@ -41,7 +45,7 @@ def getTrends(limit=10):
         pickle.dump(result,open(filepath, "wb"))
         return list(trends)
     except:
-        return list(trends)
+        return []
 
 def generateCarousellTrends(trend_keyword):
     result = mi.searchSimilarTopics(trend_keyword)

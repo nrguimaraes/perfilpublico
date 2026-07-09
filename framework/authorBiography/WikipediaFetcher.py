@@ -9,7 +9,6 @@ WIKIDATA = {
     "P27": ("nacionalidade", "entity"),
     "P108": ("empregador", "entity"),
     "P69": ("educação", "entity"),
-    "P166" : ("distinções", "entity"),
     "P569": ("nascimento", "date")
 }
 

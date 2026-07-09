@@ -38,6 +38,10 @@ class BiographyChecker:
         return self.check(author_name).has_biography
 
 
+    def needs_generation(self, author_name: str) -> bool:
+        return not self.has_biography(author_name)
+
+
     def get_existing_biography(self, author_name: str) -> Optional[str]:
         return self.check(author_name).biography
 

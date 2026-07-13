@@ -129,7 +129,9 @@ def _save_biography(
     author_metadata_collection.update_one(
         {AUTHOR_METADATA_NAME_FIELD: author_name},
         {
-            "$set": {BIOGRAPHY_FIELD: biography},
+            "$set": {BIOGRAPHY_FIELD: biography,
+                    "is_ai_generated": True,
+            },
             "$setOnInsert": {AUTHOR_METADATA_NAME_FIELD: author_name},
         },
         upsert=True,

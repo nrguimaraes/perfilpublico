@@ -156,7 +156,11 @@ def update_layoutAll(value,id):
 							metadata["description"],
 							className="card-text",
 						),
-						# html.P(
+						dbc.Badge(
+								"Gerado por IA",
+								color="secondary",
+								className="mt-2"
+						) if metadata.get("is_ai_generated", False) else None,						# html.P(
 						#	"Tópicos:",
 						#	className="card-text",
 						# ),

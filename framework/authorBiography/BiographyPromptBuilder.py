@@ -58,7 +58,10 @@ class BiographyPromptBuilder:
         return (
             "Objetivo: escrever uma biografia profissional em português de Portugal com"
             " no mínimo 65 palavras e no máximo 100 palavras,"
-            " factual, neutra e concisa sobre o jornalista indicado."
+            " factual, neutra e concisa sobre o autor indicado."
+            "Determina com base na informação fornecida se o autor corresponde"
+            " a um jornalista, a uma agência de notícias, a uma organização ou "
+            "a uma autoria coletiva e utiliza as expressões apropriadas."
             "Usa a informação da Wikipédia apenas como contexto e usa os"
             " artigos para perceber áreas de especialização, percurso editorial e"
             " temas recorrentes da carreira. Nunca inventes informação nem incluas"

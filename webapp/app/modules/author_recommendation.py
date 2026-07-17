@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 
 from modules.mongointerface import getMetricsByAuthor
+from modules.chromainterface import ( get_embedding, get_similar_authors)
 
 def getRelatedAuthorsByMetric(author,limit=10):
     reading_value = round(author["norm_Readibility_log"] * 100,2)
@@ -22,6 +23,22 @@ def getRelatedAuthorsByMetric(author,limit=10):
     return results_df
 
 
+def getRelatedAuthorsByEmbedding(author_id, limit=10):
 
+    embedding = get_embedding(author_id)
+
+    if embedding is None:
+        return []
+
+    authors = get_similar_authors(
+        embedding,
+        limit=limit + 1,
+    )
+
+    return [
+        author
+        for author in authors
+        if author["id"] != author_id
+    ][:limit]
 
 

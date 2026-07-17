@@ -7,6 +7,8 @@ import dash_bootstrap_components as dbc
 from modules.webapputils import getPhoto
 import dash_trich_components as dtc
 from modules.author_recommendation import getRelatedAuthorsByMetric
+from modules.author_recommendation import getRelatedAuthorsByEmbedding
+
 
 import pandas as pd
 
@@ -124,7 +126,16 @@ def update_layoutAll(value,id):
 	factual_value = data["norm_EntityDiversityScore_log"] * 100
 	length = data["norm_Avg_word_count_log"] * 100
 
-	related_autors = getRelatedAuthorsByMetric(data, 20)[["id", "author"]]
+	metric_autors = getRelatedAuthorsByMetric(data, 10)[["id", "author"]]
+	embedding_autors =  pd.DataFrame(
+		getRelatedAuthorsByEmbedding(str(data["_id"]), 10)
+		)[["id", "author"]]
+		
+
+	autors = pd.concat([metric_autors, embedding_autors],ignore_index=True,)
+
+	related_autors = autors.drop_duplicates(subset=["id"])
+
 
 	# dcc.Graph(id="cluster_authors",figure=cluster)
 
@@ -248,28 +259,75 @@ def update_layoutAll(value,id):
 		)
 	])
 
-	similar_author = dbc.Row([
-		dbc.Col(
-			[
-				html.H2("Autores Semelhantes"),
-				dtc.Carousel(
-					[html.Div(className="carousel_div",children=[
+	similar_author = html.Div([
 
-						html.Center(html.A(children=[html.Img(src=getPhoto(row["author"]), style={"width": "161px", "height": "161px"}),row["author"]], href="/authorpage?id=" + str(row["id"])))]) for
-						ind, row in related_autors.iterrows()
-					],
-					# slides_to_show=10,
-					variable_width=True,
-					infinite=False,
-					arrows=False,
-					center_mode=True,
-					center_padding="50px"
+    dbc.Row([
+        dbc.Col([
+            html.H2("Autores Semelhantes por Métricas"),
+            dtc.Carousel(
+                [
+                    html.Div(
+                        className="carousel_div",
+                        children=[
+                            html.Center(
+                                html.A(
+                                    children=[
+                                        html.Img(
+                                            src=getPhoto(row["author"]),
+                                            style={"width": "161px", "height": "161px"},
+                                        ),
+                                        row["author"],
+                                    ],
+                                    href="/authorpage?id=" + str(row["id"]),
+                                )
+                            )
+                        ],
+                    )
+                    for _, row in metric_autors.iterrows()
+                ],
+                variable_width=True,
+                infinite=False,
+                arrows=False,
+                center_mode=True,
+                center_padding="50px",
+            ),
+        ], width=12),
+    ]),
 
-				)
-			],
-			width={"size": 12}, align="center"
-		)
-	])
+    dbc.Row([
+        dbc.Col([
+            html.H2("Autores Semelhantes por Tópicos"),
+            dtc.Carousel(
+                [
+                    html.Div(
+                        className="carousel_div",
+                        children=[
+                            html.Center(
+                                html.A(
+                                    children=[
+                                        html.Img(
+                                            src=getPhoto(row["author"]),
+                                            style={"width": "161px", "height": "161px"},
+                                        ),
+                                        row["author"],
+                                    ],
+                                    href="/authorpage?id=" + str(row["id"]),
+                                )
+                            )
+                        ],
+                    )
+                    for _, row in embedding_autors.iterrows()
+                ],
+                variable_width=True,
+                infinite=False,
+                arrows=False,
+                center_mode=True,
+                center_padding="50px",
+            ),
+        ], width=12),
+    ])
+
+])
 	lay=[html.Br(),
 	profile_data,
 	html.Br(),

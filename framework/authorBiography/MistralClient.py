@@ -24,3 +24,11 @@ class MistralClient:
         )
 
         return response.choices[0].message.content.strip()
+    
+    def embed(self, text: str) -> list[float]:
+        response = self.client.embeddings.create(
+            model="mistral-embed",
+            inputs=[text],
+        )
+
+        return response.data[0].embedding

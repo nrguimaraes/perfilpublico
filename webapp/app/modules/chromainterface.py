@@ -10,10 +10,7 @@ client = chromadb.PersistentClient(path=str(CHROMA_PATH))
 
 collection = client.get_or_create_collection(name="authors")
 
-print(CHROMA_PATH)
-print(collection.count())
 result = collection.peek(limit=5)
-print(result["ids"])
 
 
 def get_embedding(author_id: str):
@@ -62,3 +59,10 @@ def get_similar_authors(
         )
 
     return authors
+
+def searchSimilarAuthors(query, mistral, limit=10):
+    embedding = mistral.embed(query)
+    return get_similar_authors(
+        embedding=embedding,
+        limit=limit,
+    )

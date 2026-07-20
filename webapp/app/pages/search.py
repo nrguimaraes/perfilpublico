@@ -7,10 +7,19 @@ dash.register_page(__name__)
 
 
 def layout(search=None, **other_unknown_query_strings):
-
+	semantic = False
 
 	results=mi.searchAuthor(search)
+	
+	if not results or (isinstance(results, list) and len(results) == 0):
+		results = mi.semanticSearchAuthors(search)
+		semantic = True
 
+	title = (
+		f"Resultados da Pesquisa: {search}"
+		if not semantic
+		else f"Autores relacionados com: {search}"
+	)
 
 	if type(results)==dict:
 		return dcc.Location(href="/authorpage?id=" + str(str(results["_id"])), id="tak")
@@ -37,21 +46,14 @@ def layout(search=None, **other_unknown_query_strings):
 
 
 
-
-
 		cards = dbc.Container([
 			html.Br(),
-			dbc.Row(html.H1("Resultados da Pesquisa: " + search)),
+			dbc.Row(html.H1(title)),
 			html.Br(),
 			dbc.Row(list_of_cards)],
 
 			fluid=True)
 		return cards
-
-
-
-
-
 
 
 	notfound = dbc.Container([

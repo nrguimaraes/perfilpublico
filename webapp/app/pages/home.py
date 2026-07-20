@@ -53,20 +53,23 @@ row= html.Div(children=[
         dbc.Row(
             [
                 dbc.Col( html.Center(children=[
-                    html.Form([
-                    dcc.Input(type="search", id="search-bar", placeholder="Introduza o nome de um autor", className="form-control",style={"text-align":"center"}),
-                    html.Br(),
-
-                    html.Button('Pesquisar por autor', id='submit_search_val', className="btn btn-primary submit-button",
-                                n_clicks=0)
-                    ],)
-                    ,]),
-
-                    width={"size": 12},
-                ),
-
-
-            ],align="center"
+                    html.Div([
+                        dcc.Input(
+                            id="search-bar",
+                            type="search",
+                            placeholder="Introduza o nome de um autor",
+                            className="form-control",
+                        ),
+                        html.Br(),
+                        html.Button(
+                            "Pesquisar por autor",
+                            id="submit_search_val",
+                            className="btn btn-primary submit-button",
+                            n_clicks=0,
+                        ),
+                    ])
+            ]))
+            ]
         ),
 ])
 
@@ -130,12 +133,17 @@ layout=dbc.Container(fluid=True,children=layout_l)
 @callback(
     Output('output-state', 'children'),
     Input('submit_search_val', 'n_clicks'),
+    Input("search-bar", "n_submit"),
     State('search-bar', 'value')
 )
-def update_output(n_clicks, input1):
-    if(n_clicks):
-        search =re.sub(' +', ' ', str(input1)).strip()
-        if(search!=None and search!=""):
-            return dcc.Location(href="/search?search="+search,id="tak")
+def update_output(n_clicks, n_submit, input1):
+    if not input1:
+        return dash.no_update
 
+    if n_clicks or n_submit:
+        search = re.sub(" +", " ", input1).strip()
+        if search:
+            return dcc.Location(href=f"/search?search={search}", id="tak")
+
+    return dash.no_update
 

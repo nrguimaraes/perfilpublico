@@ -5,10 +5,13 @@ from bson.objectid import ObjectId
 
 import os
 from modules.mongov import client
+from modules.mistralclient import MistralClient
+from modules.chromainterface import searchSimilarAuthors
 
 #uri =os.environ.get("MONGO_URI")
 #client = MongoClient(uri)
 
+mistral = MistralClient()
 db = client.PerfilPublicoAll
 
 author_collection = db.AuthorsFeaturesAll
@@ -34,6 +37,24 @@ def searchAuthor(name):
     return None
 
 
+def semanticSearchAuthors(query, n_results=10):
+    similar = searchSimilarAuthors(
+        query=query,
+        mistral=mistral,
+        limit=n_results,
+    )
+
+    results = []
+
+    for author in similar:
+        mongo_author = author_collection.find_one(
+            {"_id": ObjectId(author["id"])}
+        )
+
+        if mongo_author:
+            results.append(mongo_author)
+
+    return results
 
 def getAuthorMetadata(name):
     result=author_metadata_collection.find_one({"name":name})

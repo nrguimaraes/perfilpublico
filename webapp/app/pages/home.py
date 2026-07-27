@@ -3,8 +3,10 @@ from dash import html, dcc,callback
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 from modules.webapputils import getTrends, generateCarousellTrends
+from pages.chatbot import chatbot
 import random
 import re
+
 dash.register_page(__name__, title='Página Inicial', description='Página Inicial do Perfil Público',path='/')
 trends = getTrends(10)
 fixed_trends=["António Costa","Ciência","Montenegro","Galamba","PSD","Ronaldo","IA","Açores","Porto","Covid","Lisboa","Benfica"]
@@ -57,7 +59,7 @@ row= html.Div(children=[
                         dcc.Input(
                             id="search-bar",
                             type="search",
-                            placeholder="Introduza o nome de um autor",
+                            placeholder="Introduza o nome de um autor ou um tópico",
                             className="form-control",
                         ),
                         html.Br(),
@@ -147,3 +149,8 @@ def update_output(n_clicks, n_submit, input1):
 
     return dash.no_update
 
+
+layout = dbc.Container(
+    fluid=True,
+    children=layout_l + [chatbot]
+)

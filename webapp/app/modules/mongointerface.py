@@ -52,6 +52,7 @@ def semanticSearchAuthors(query, n_results=10):
         )
 
         if mongo_author:
+            mongo_author["distance"] = author["distance"]
             results.append(mongo_author)
 
     return results
@@ -284,3 +285,79 @@ def countNews():
     return (author_collection.count_documents({}))
 #def insertMetaDataAuthors():
 
+
+def getAuthorNewsByTopic(name, topic):
+    topic_query = re.compile('.*' + topic + '.*', re.IGNORECASE)
+    results = news_topic_collection.find({"Author_clean": name, "Topics": topic_query},
+                                         {"Title": 1, "Link": 1, "ExtractionDate": 1}).sort("ExtractionDate")
+    return_list = list()
+    for r in results:
+        r["Link"] = r["Link"].replace("noFrame/replay", "wayback")
+        r["ExtractionDate"] = r["ExtractionDate"][0:4] + "-" + r["ExtractionDate"][4:6] + "-" + r[
+            "ExtractionDate"][6:8]
+        return_list.append(r)
+    result_df = pd.DataFrame.from_dict(return_list)
+    result_df.drop_duplicates(subset=["Title"], keep="last", inplace=True)
+    return result_df
+
+
+def getTopTopics(limit=10):
+
+    pipeline = [
+        {
+            "$group": {
+                "_id": "$topic",
+                "value": {"$sum": "$value"}
+            }
+        },
+        {
+            "$sort": {"value": -1}
+        },
+        {
+            "$limit": limit
+        }
+    ]
+        
+    results = topics_collection.aggregate(pipeline)
+
+    return [
+        {
+            "topic": r["_id"],
+            "value": r["value"]
+        }
+        for r in results
+    ]
+
+def getAuthorTopics(name):
+    results = topics_collection.find({"author_name": name},
+        {
+            "topic": 1,
+            "value": 1,
+            "_id": 0
+        }).sort([("value", pymongo.DESCENDING)])
+    
+    return_list = list()
+    for r in results:
+        return_list.append(r)
+    return return_list
+
+def getAuthorAllNews(name):
+    results = news_collection.find({"Author_clean": name},
+        {
+            "Title": 1,
+            "Link": 1,
+            "ExtractionDate": 1,
+            "_id": 0
+        }).sort([("ExtractionDate", pymongo.DESCENDING)])
+    return_list = list()
+
+    for r in results:
+        r["Link"] = r["Link"].replace("noFrame/replay", "wayback")
+        r["ExtractionDate"] = r["ExtractionDate"][0:4] + "-" + r["ExtractionDate"][4:6] + "-" + r[
+            "ExtractionDate"][6:8]
+        return_list.append(r)
+
+    result_df = pd.DataFrame(return_list)
+    result_df.drop_duplicates(subset=["Title"], keep="last", inplace=True)
+
+    return result_df.to_dict("records")   

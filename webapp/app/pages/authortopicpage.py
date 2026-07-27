@@ -10,6 +10,8 @@ from modules.author_recommendation import getRelatedAuthorsByMetric
 
 import pandas as pd
 
+from pages.chatbot import chatbot
+
 dash.register_page(__name__, title="Perfil Público - Autor x Tópico", description='Página de Perfil do Autor x Tópico')
 
 import modules.mongointerface as mi
@@ -26,7 +28,9 @@ def layout(id, topic, **other_unknown_query_strings):
 
 	return  [html.Span(id="topic_input_id",children=id,style={"visibility":"hidden"}),
 			 html.Span(id="topic_name", children=topic, style={"visibility": "hidden"}),
-			 dcc.Loading(id="topic_spinner_author",type="circle"), dbc.Container(fluid=True, id="topic_container_author")]
+			 dcc.Loading(id="topic_spinner_author",type="circle"), 
+			 dbc.Container(fluid=True, id="topic_container_author"),
+			 chatbot]
 
 
 
@@ -210,4 +214,5 @@ def update_newsTable(year,topic,value):
 	if(len(news)==0):
 		return html.Center(html.P("Nenhum resultado encontrado para o ano seleccionado"))
 	return table
+
 

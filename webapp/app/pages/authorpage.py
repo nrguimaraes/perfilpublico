@@ -12,6 +12,8 @@ from modules.author_recommendation import getRelatedAuthorsByEmbedding
 
 import pandas as pd
 
+from pages.chatbot import chatbot
+
 dash.register_page(__name__, title="Perfil Público - Autor", description='Página de Perfil do Autor')
 
 import modules.mongointerface as mi
@@ -26,7 +28,8 @@ def layout(id, **other_unknown_query_strings):
 
 
 
-	return  [html.Span(id="input_id",children=id,style={"visibility":"hidden"}),dcc.Loading(id="spinner_author",type="circle"), dbc.Container(fluid=True, id="container_author")]
+	return  [html.Span(id="input_id",children=id,style={"visibility":"hidden"}),dcc.Loading(id="spinner_author",type="circle"), dbc.Container(fluid=True, id="container_author"),
+		  chatbot]
 
 
 

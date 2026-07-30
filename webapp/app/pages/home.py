@@ -3,7 +3,7 @@ from dash import html, dcc,callback
 import dash_bootstrap_components as dbc
 from dash.dependencies import Input, Output, State
 from modules.webapputils import getTrends, generateCarousellTrends
-from pages.chatbot import chatbot
+from pages.chatbot import Chatbot
 import random
 import re
 
@@ -152,5 +152,10 @@ def update_output(n_clicks, n_submit, input1):
 
 layout = dbc.Container(
     fluid=True,
-    children=layout_l + [chatbot]
+    children=layout_l + [
+            html.Span(id="chat-page", children="home", hidden=True),
+            html.Span(id="chat-author", children="", hidden=True),
+            html.Span(id="chat-topic", children="", hidden=True),
+            Chatbot(),
+        ]
 )

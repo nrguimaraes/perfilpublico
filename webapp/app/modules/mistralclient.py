@@ -3,8 +3,6 @@ import os
 from mistralai.client import Mistral
 
 
-
-
 class MistralClient:
 
     def __init__(self):
@@ -139,6 +137,7 @@ class MistralClient:
         )
 
         return response.choices[0].message.content.strip()
+
     
     def extract_author(self, question: str):
         prompt = f"""
@@ -347,3 +346,28 @@ class MistralClient:
         indices = json.loads(content)
 
         return [news[i] for i in indices]
+
+
+    def generate(self, messages):
+
+        mistral_messages = []
+
+        for msg in messages:
+            if msg.type == "system":
+                role = "system"
+            elif msg.type == "human":
+                role = "user"
+            else:
+                role = "assistant"
+
+            mistral_messages.append({
+                "role": role,
+                "content": msg.content
+            })
+
+        response = self.client.chat.complete(
+            model="mistral-small-latest",
+            messages=mistral_messages
+        )
+
+        return response.choices[0].message.content

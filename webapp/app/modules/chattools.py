@@ -1,4 +1,3 @@
-from pydoc_data.topics import topics
 
 from modules.mongointerface import (
     semanticSearchAuthors,
@@ -33,11 +32,11 @@ class ChatTools:
             
             best = similar[0]["distance"]
 
-            return [
+            return {"intent": "HOME_SEARCH_AUTHORS", "topic": topic, "authors": [
                 author
                 for author in similar
                 if author["distance"] <= best + 0.1
-            ]
+            ]}
             
         
         elif intent == "HOME_COUNT_AUTHORS":
@@ -47,18 +46,18 @@ class ChatTools:
             
             best = similar[0]["distance"]
             
-            return len([
+            return {"intent": "HOME_COUNT_AUTHORS", "topic": topic, "count": len([
                 author
                 for author in similar
                 if author["distance"] <= best + 0.1
-            ])
+            ])}
 
         elif intent == "HOME_TOP_TOPICS":
-            return getTopTopics()
+            return {"intent": "HOME_TOP_TOPICS", "topics": getTopTopics()}
 
         elif intent == "HOME_AUTHOR_TOPICS":
             author = self.mistral.extract_author(question)
-            return getAuthorTopics(author)
+            return {"intent": "HOME_AUTHOR_TOPICS", "author": author, "topics": getAuthorTopics(author)}
 
         elif intent == "AUTHOR_TOPICS":
             topics = getAuthorTopics(author)
@@ -73,22 +72,23 @@ class ChatTools:
                     Responde apenas com uma lista separada por vírgulas.
                 """
                 response = self.mistral.chat(prompt)
-                return response
+                return {"intent": "AUTHOR_TOPICS", "author": author, "topics": response}
 
-            return topics
+            return {"intent": "AUTHOR_TOPICS", 
+                    "author": author, 
+                    "topics": topics}
 
 
         elif intent == "AUTHOR_NEWS_BY_YEAR":
             year = self.mistral.extract_year(question)
             df = getAuthorNewsByYear(author, year)
-            return df.to_dict("records")
-        
+            return {"intent": "AUTHOR_NEWS_BY_YEAR", "author": author, "year": year, "news": df.to_dict("records")}
+
         elif intent == "AUTHOR_METADATA":
-            return getAuthorMetadata(author)
-        
+            return {"intent": "AUTHOR_METADATA", "author": author, "metadata": getAuthorMetadata(author)}
+
         elif intent == "AUTHOR_SEARCH_NEWS":
             topic = self.mistral.extract_topic(question)
-            print(topic)
             news = getAuthorAllNews(author)
             seen = set()
             unique_news = []
@@ -99,7 +99,7 @@ class ChatTools:
                     unique_news.append(article)
 
             news = unique_news
-            return self.mistral.select_news_by_topic(topic=topic, news=news)
+            return {"intent": "AUTHOR_SEARCH_NEWS", "author": author, "topic": topic, "news": self.mistral.select_news_by_topic(topic=topic, news=news)}
         
 
         elif intent == "AUTHOR_TOPIC_NEWS":
@@ -107,8 +107,12 @@ class ChatTools:
 
             if news.empty:
                 all_news = getAuthorAllNews(author)
-                return self.mistral.select_news_by_topic(topic, all_news)
+                news_ = self.mistral.select_news_by_topic(topic, all_news)
+            else: news_ = news.to_dict("records")
 
-            return news.to_dict("records")
+            return {"intent": "AUTHOR_TOPIC_NEWS", 
+                    "topic": topic,
+                    "author": author, 
+                    "news": news_}
 
         return None

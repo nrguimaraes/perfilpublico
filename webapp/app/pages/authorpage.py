@@ -12,7 +12,7 @@ from modules.author_recommendation import getRelatedAuthorsByEmbedding
 
 import pandas as pd
 
-from pages.chatbot import chatbot
+from pages.chatbot import Chatbot
 
 dash.register_page(__name__, title="Perfil Público - Autor", description='Página de Perfil do Autor')
 
@@ -29,7 +29,10 @@ def layout(id, **other_unknown_query_strings):
 
 
 	return  [html.Span(id="input_id",children=id,style={"visibility":"hidden"}),dcc.Loading(id="spinner_author",type="circle"), dbc.Container(fluid=True, id="container_author"),
-		  chatbot]
+			html.Span(id="chat-page", children="author", style={"display": "none"}),
+			html.Span(id="chat-author", children="", style={"display": "none"}),
+			html.Span(id="chat-topic", children="", style={"display": "none"}),
+		   	Chatbot()]
 
 
 
@@ -95,7 +98,7 @@ def update_output(value):
 
 
 @callback(
-    [Output('container_author', 'children'),Output("spinner_author","style")],
+    [Output('container_author', 'children'),Output("spinner_author","style"),Output("chat-author", "children"),],
 	[Input("spinner_author","value"),
 	   Input("input_id","children")]
 )
@@ -167,7 +170,7 @@ def update_layoutAll(value,id):
 							style={"color": "#34495E"}
 						),
 						html.P(
-							metadata["description"],
+							dcc.Markdown(metadata["description"]),
 							className="card-text",
 						),
 						dbc.Badge(
@@ -343,7 +346,7 @@ def update_layoutAll(value,id):
 	html.Br()]
 
 	prop={"visibility":"hidden"}
-	return lay,prop
+	return lay,prop, data["Name"]
 
 
 @callback(

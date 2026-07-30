@@ -160,3 +160,82 @@
     justify-content:center;
     align-items:center;
 }
+
+.user-row{
+    display:flex;
+    justify-content:flex-end;
+    margin:10px 0;
+}
+
+.bot-row{
+    display:flex;
+    justify-content:flex-start;
+    margin:10px 0;
+}
+
+.user-bubble{
+
+    background:#C8102E;
+    color:white;
+
+    padding:10px 15px;
+
+    border-radius:18px 18px 4px 18px;
+
+    max-width:80%;
+
+    word-wrap:break-word;
+}
+
+.bot-bubble{
+
+    background:#f3f3f3;
+    color:#222;
+
+    padding:10px 15px;
+
+    border-radius:18px 18px 18px 4px;
+
+    max-width:80%;
+
+    word-wrap:break-word;
+}
+
+.bot-message p,
+.user-message p,
+.bot-bubble p,
+.user-bubble p {
+    margin: 0;
+}
+
+.bot-message,
+.user-message, 
+.bot-bubble,
+.user-bubble {
+    font-family: "Open Sans", sans-serif;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.bot-message *,
+.user-message *,
+.bot-bubble *,
+.user-bubble * {
+    font-family: inherit;
+    font-size: inherit;
+    line-height: inherit;
+}
+
+.bot-message ul,
+.bot-message ol,
+.user-message ul,
+.user-message ol {
+    margin: .4rem 0 0 1.2rem;
+}
+
+.bot-bubble,
+.bot-bubble *,
+.user-bubble,
+.user-bubble * {
+    font-family: "Open Sans", sans-serif;
+}

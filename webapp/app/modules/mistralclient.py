@@ -18,48 +18,138 @@ class MistralClient:
     
 
     def classify_intent(self, question: str, page: str):
-    
+
         prompt = f"""
-            És um classificador de intenções para um chatbot de um portal de notícias.
+    És um classificador de intenções para um chatbot do portal Perfil Público.
 
-            A tua única tarefa é decidir qual a operação que o backend deve executar.
+    A tua única tarefa é escolher a intenção correta.
+    Nunca respondas à pergunta.
+    Responde APENAS com uma das intenções abaixo.
 
-            Não respondas à pergunta.
-            Responde apenas com UMA das intenções abaixo.
+    Página atual:
+    {page}
 
-            Página atual:
-            {page}
+    Escolhe apenas intenções válidas para essa página.
 
-            Não escolhas intenções de outras páginas.
-            Escolhe apenas uma intenção válida para essa página.
+    =========================
+    HOME
+    =========================
 
-            Home:
-            - HOME_SEARCH_AUTHORS: encontrar autores relacionados com um tema, na pagina home.
-            - HOME_COUNT_AUTHORS: contar autores relacionados com um tema, na pagina home.
-            - HOME_TOP_TOPICS: obter os tópicos mais populares, na pagina home.
-            - HOME_AUTHOR_TOPICS: obter os tópicos de um autor, na pagina home.
+    - HOME_SEARCH_AUTHORS
+        Encontrar autores relacionados com um tema.
 
-            Author:
-                Esta página representa um autor específico
-                O autor já é conhecido pelo sistema.
+        Exemplos:
+        - Que autores escrevem sobre IA?
+        - Quem escreve sobre ambiente?
+        - Autores que falam de António Costa.
 
-            - AUTHOR_TOPICS: obter os tópicos de um autor, na pagina author.
-            - AUTHOR_NEWS_BY_YEAR: listar artigos de um determinado ano, na pagina author.
-            - AUTHOR_METADATA: obter informações metadata de um autor, na pagina author.
-            - AUTHOR_SEARCH_NEWS: encontrar artigos de um autor relacionados com um tema ou palavra-chave, na pagina author.
-            
-            Author_Topic: 
-                Esta página representa um autor e um tópico específico
-                O autor e tópico já são conhecidos pelo sistema.
+    - HOME_COUNT_AUTHORS
+        Contar autores relacionados com um tema.
 
-            - AUTHOR_TOPIC_NEWS: listar artigos de um tópico de um autor, na pagina author_topic.
+        Exemplos:
+        - Quantos autores escrevem sobre IA?
+        - Quantos jornalistas falam de saúde?
 
-            Se nenhuma intenção corresponder, responde:
-            UNKNOWN
+    - HOME_TOP_TOPICS
+        Mostrar os tópicos mais populares.
 
-            Pergunta:
-            {question}
-        """
+        Exemplos:
+        - Quais os tópicos mais populares?
+        - Que temas estão em destaque?
+
+    - HOME_AUTHOR_TOPICS
+        Mostrar os principais tópicos de um determinado autor.
+
+        Exemplos:
+        - Sobre o que escreve Clara Viana?
+        - Quais os temas do Carlos Cipriano?
+
+    =========================
+    AUTHOR
+    =========================
+
+    Esta página representa um autor específico.
+    O autor já é conhecido pelo sistema.
+
+    - AUTHOR_METADATA
+        Perguntas sobre o autor.
+
+        Exemplos:
+        - Quem é este autor?
+        - Fala-me dele.
+        - Qual é a biografia?
+        - Em que jornal trabalha?
+        - Qual é o cargo?
+
+    - AUTHOR_TOPICS
+        Perguntas sobre os principais tópicos do autor.
+
+        Exemplos:
+        - Sobre o que escreve?
+        - Quais são os principais temas?
+        - Em que áreas escreve?
+
+    - AUTHOR_NEWS_BY_YEAR
+        Perguntas sobre artigos publicados num determinado ano.
+
+        Exemplos:
+        - Que artigos escreveu em 2022?
+        - O que publicou em 2019?
+        - Quantos artigos escreveu em 2020?
+
+    - AUTHOR_SEARCH_NEWS
+        Utiliza apenas quando o utilizador menciona explicitamente
+        um NOVO tema ou palavra-chave que tenha de ser pesquisado.
+
+        Exemplos:
+        - Que artigos escreveu sobre António Costa?
+        - Que artigos escreveu sobre IA?
+        - Mostra-me os artigos sobre ambiente.
+        - O que escreveu sobre vacinação?
+
+    =========================
+    AUTHOR_TOPIC
+    =========================
+
+    Esta página representa um autor e um tópico específico.
+    O autor e o tópico já são conhecidos.
+
+    - AUTHOR_TOPIC_NEWS
+        Perguntas sobre os artigos do tópico atualmente aberto.
+
+        Exemplos:
+        - Que artigos escreveu?
+        - Que artigos escreveu sobre este tema?
+        - Quais são os artigos?
+        - Quantos artigos escreveu?
+        - Enumera os artigos.
+        - Sobre o que são estes artigos?
+
+    - AUTHOR_TOPIC_OPINION
+        Perguntas que procuram saber a posição, opinião,
+        perspetiva ou abordagem do autor relativamente
+        ao tópico atualmente aberto.
+
+        Exemplos:
+        - O que pensa sobre este tema?
+        - Qual é a opinião dele?
+        - Como aborda este assunto?
+        - É a favor ou contra?
+        - Que posição assume?
+        - O que defende?
+        - Qual é a visão dele sobre este tema?
+        - Resume a opinião dele.
+        - O que dizem os artigos dele sobre isto?
+
+    =========================
+
+    Se nenhuma intenção corresponder, responde:
+
+    UNKNOWN
+
+    Pergunta:
+    {question}
+    """
 
         response = self.client.chat.complete(
             model="mistral-small-latest",

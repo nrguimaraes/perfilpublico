@@ -4,10 +4,17 @@ import dash_bootstrap_components as dbc
 from dash.exceptions import PreventUpdate
 from modules.chatbot_service import Chatbot_Service 
 chatbot = Chatbot_Service()
-def Chatbot():   
+
+
+def Chatbot():      
 
     return html.Div([
-
+        dcc.Store(id="pending-question"),
+        dcc.Store(
+            id="chat-session",
+            storage_type="session",
+            data=[]
+        ),
         html.Button(
             html.Img(
                 src="/assets/chat.png",
@@ -61,6 +68,8 @@ def Chatbot():
         )
     ])
 
+
+
 @callback(
     Output("chat-panel", "is_open"),
     Output("open-chat", "style"),
@@ -85,21 +94,64 @@ def toggle_chat(open_clicks, is_open):
 
     return dash.no_update, {"display": "none"}
 
+
 @callback(
-    Output("chat-history", "children"),
+    Output("chat-history", "children", allow_duplicate=True),
     Output("chat-input", "value"),
+    Output("pending-question", "data"),
     Input("send-chat", "n_clicks"),
     Input("chat-input", "n_submit"),
     State("chat-history", "children"),
     State("chat-input", "value"),
+    prevent_initial_call=True,
+)
+def enqueue_message(_, __, history, question):
+
+    if not question:
+        raise PreventUpdate
+
+    history.append(
+        html.Div(
+            html.Div(dcc.Markdown(question), className="user-bubble"),
+            className="user-row"
+        )
+    )
+
+    history.append(
+        html.Div(
+            html.Div(
+                html.Div(
+                    [
+                        html.Span(className="thinking-dot"),
+                        html.Span(className="thinking-dot"),
+                        html.Span(className="thinking-dot"),
+                    ],
+                    className="thinking"
+                ),
+                className="bot-bubble"
+            ),
+            className="bot-row"
+        )
+    )
+
+    return history, "", question
+
+
+@callback(
+    Output("chat-history", "children", allow_duplicate=True),
+    Output("chat-session", "data"),
+    Input("pending-question", "data"),
+    State("chat-history", "children"),
+    State("chat-session", "data"),
     State("chat-page", "children"),
     State("chat-author", "children"),
     State("chat-topic", "children"),
-
     prevent_initial_call=True,
 )
+def answer_question(question, history, session, page, author, topic):
 
-def send_message(send_clicks, n_submit, history, question, page, author, topic):
+    if session is None:
+        session = []
 
     if not question:
         raise PreventUpdate
@@ -108,19 +160,28 @@ def send_message(send_clicks, n_submit, history, question, page, author, topic):
         question=question,
         page=page,
         author=author,
-        topic=topic
+        topic=topic,
+        history=session
     )
 
+    history.pop()
 
-    history.append(html.Div(
-        html.Div(dcc.Markdown(question), className="user-bubble"),
-        className="user-row"
-    ))
+    
+    history.append(
+        html.Div(
+            html.Div(dcc.Markdown(answer), className="bot-bubble"),
+            className="bot-row"
+        )
+    )
 
+    session.append({
+        "role": "user",
+        "content": question
+    })
 
-    history.append(html.Div(
-        html.Div(dcc.Markdown(answer), className="bot-bubble"),
-        className="bot-row"
-    ))
+    session.append({
+        "role": "assistant",
+        "content": answer
+    })
 
-    return history, ""
+    return history, session 

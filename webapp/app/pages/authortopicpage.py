@@ -47,7 +47,11 @@ def layout(id, topic, **other_unknown_query_strings):
 
 
 @callback(
-    [Output('topic_container_author', 'children'),Output("topic_spinner_author","style")],
+    [Output('topic_container_author', 'children'),
+	 Output("topic_spinner_author","style"),
+	 Output("chat-author", "children"),
+	 Output("chat-topic", "children")],
+
 	[	Input("topic_spinner_author","value"),
 		Input("topic_input_id","children"),
 	   	Input("topic_name", "children")]
@@ -193,7 +197,7 @@ def update_layoutAll(value,id,topic):
 	html.Br()]
 
 	prop={"visibility":"hidden"}
-	return lay,prop
+	return lay,prop, data["Name"], topic
 
 
 @callback(

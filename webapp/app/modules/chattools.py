@@ -12,11 +12,12 @@ from modules.mongointerface import (
 )
 
 from modules.mistralclient import MistralClient
-
+from modules.arquivopt import ArquivoPT
 class ChatTools:
 
     def __init__(self):
         self.mistral = MistralClient()
+        self.arquivopt = ArquivoPT()
 
     def execute(
         self,
@@ -81,6 +82,13 @@ class ChatTools:
 
         elif intent == "AUTHOR_NEWS_BY_YEAR":
             year = self.mistral.extract_year(question)
+            if year is None:
+                news = getAuthorAllNews(author)
+                return {"intent": "AUTHOR_NEWS_BY_YEAR", 
+                        "author": author, 
+                        "year": None,
+                        "news": news.to_dict("records")}
+            
             df = getAuthorNewsByYear(author, year)
             return {"intent": "AUTHOR_NEWS_BY_YEAR", "author": author, "year": year, "news": df.to_dict("records")}
 
@@ -113,6 +121,53 @@ class ChatTools:
             return {"intent": "AUTHOR_TOPIC_NEWS", 
                     "topic": topic,
                     "author": author, 
-                    "news": news_}
+                    "news": news_
+            }
+
+        elif intent == "AUTHOR_OPINION":
+            topic = self.mistral.extract_topic(question)
+
+            news = getAuthorNewsByTopic(author, topic)
+
+            if news.empty:
+                all_news = getAuthorAllNews(author)
+                news_ = self.mistral.select_news_by_topic(topic, all_news)
+            else: 
+                news_ = news.to_dict("records")
+
+            selected_news = news_[:5] if len(news_) > 5 else news_
+
+            for article in selected_news:
+                article["Summary"] = self.arquivopt.fetch_summary(article["Link"])
+
+
+            return {
+                "intent": "AUTHOR_OPINION",
+                "author": author,
+                "topic": topic,
+                "news": selected_news
+            }
+
+        
+        elif intent == "AUTHOR_TOPIC_OPINION":
+            news = getAuthorNewsByTopic(author, topic)
+
+            if news.empty:
+                all_news = getAuthorAllNews(author)
+                news_ = self.mistral.select_news_by_topic(topic, all_news)
+            else: 
+                news_ = news.to_dict("records")
+
+            selected_news = news_[:5] if len(news_) > 5 else news_
+
+            for article in selected_news:
+                article["Summary"] = self.arquivopt.fetch_summary(article["Link"])
+
+            return {
+                "intent": "AUTHOR_TOPIC_OPINION",
+                "author": author,
+                "topic": topic,
+                "news": selected_news
+            }
 
         return None

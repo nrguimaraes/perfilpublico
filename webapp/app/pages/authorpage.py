@@ -98,7 +98,9 @@ def update_output(value):
 
 
 @callback(
-    [Output('container_author', 'children'),Output("spinner_author","style"),Output("chat-author", "children"),],
+    [Output('container_author', 'children'),
+	 Output("spinner_author","style"),
+	 Output("chat-author", "children"),],
 	[Input("spinner_author","value"),
 	   Input("input_id","children")]
 )

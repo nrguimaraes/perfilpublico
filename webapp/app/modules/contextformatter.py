@@ -58,5 +58,22 @@ class ContextFormatter:
 
             return txt
 
+        elif intent == "AUTHOR_OPINION" or intent == "AUTHOR_TOPIC_OPINION":
 
+            text = f"Autor: {context['author']}\n"
+            text += f"Tópico: {context['topic']}\n\n"
+
+            text += "Artigos:\n"
+
+            for article in context["summaries"]:
+
+                text += f"""
+                    Título:
+                    {article['title']}
+
+                    Resumo:
+                    {article['summary']}
+
+                    """
+                    
         return str(context)

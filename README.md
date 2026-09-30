@@ -42,7 +42,7 @@ Authors without a biography get one generated automatically. The pipeline checks
 Run it with `python -m framework.authorBiography.generate_all_biographies`.
 
 <section align="center">
-<img src="docs/biographies.jpg" alt="AI Biography flow" width="300px" />
+<img src="docs/biographies.jpg" alt="AI Biography flow" width="200px" />
 </section>
 
 ### Vectorial DB
@@ -52,7 +52,7 @@ The recommendations and the semantic search both rely on a Chroma vectorial data
 Run it with `python -m framework.recommendationFeatures.generate_all_embeddings`.
 
 <section align="center">
-<img src="docs/vectorialDB.jpg" alt="Vectorial DB build flow" width="180px" />
+<img src="docs/vectorialDB.jpg" alt="Vectorial DB build flow" width="120px" />
 </section>
 
 ### Recommendations
@@ -60,7 +60,7 @@ Run it with `python -m framework.recommendationFeatures.generate_all_embeddings`
 The selected author's embedding is used to search the vectorial DB for the 10 most similar authors. These are shown on the author page, alongside the existing metric-based recommendations.
 
 <section align="center">
-<img src="docs/recommendations.jpg" alt="Recommendations flow" width="180px" />
+<img src="docs/recommendations.jpg" alt="Recommendations flow" width="120px" />
 </section>
 
 ### Semantic Search
@@ -68,7 +68,7 @@ The selected author's embedding is used to search the vectorial DB for the 10 mo
 When a search finds no author by name, the query is converted into an embedding and compared against the author embeddings in the vectorial DB. This lets readers search by subject (e.g. "alterações climáticas") and get the 10 authors who best match it.
 
 <section align="center">
-<img src="docs/semanticSearch.jpg" alt="Semantic Search flow" width="180px" />
+<img src="docs/semanticSearch.jpg" alt="Semantic Search flow" width="120px" />
 </section>
 
 ### Chatbot
@@ -78,7 +78,7 @@ A conversational assistant available on the home, author and topic pages. Reader
 The chatbot is aware of the page it is on, so a question asked on an author page is understood as being about that author. Answers are grounded in the platform's own data and, for questions about an author's opinions, in article summaries fetched from Arquivo.pt. When the available data does not cover the question, the chatbot says so instead of making up an answer. It replies in European Portuguese and keeps the conversation history, so follow-up questions work.
 
 <section align="center">
-<img src="docs/chatbot.jpg" alt="Chatbot flow" width="220px" />
+<img src="docs/chatbot.jpg" alt="Chatbot flow" width="120px" />
 </section>
 
 ## Getting Started

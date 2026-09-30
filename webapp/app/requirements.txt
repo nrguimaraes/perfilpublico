@@ -10,5 +10,8 @@ pytrends==4.9.2
 plotly==5.14.1
 gunicorn
 python-dotenv
-
-
+chromadb==1.5.9
+mistralai==2.6.0
+langchain-core==1.5.1
+requests==2.28.1
+beautifulsoup4==4.11.1
